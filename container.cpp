@@ -20,6 +20,7 @@ public:
         if (isEmpty()) {
             tail = newNode;
         }
+        std::cout << "я долбоеб";
         head = newNode;
         count++;
     }
