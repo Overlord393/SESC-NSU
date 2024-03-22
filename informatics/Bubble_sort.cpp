@@ -1,3 +1,6 @@
+//
+// Created by Сергей on 22.03.2024.
+//
 #include <iostream>
 #include "vector"
 using namespace std;
@@ -5,7 +8,7 @@ using namespace std;
 int main() {
     int n;
     cin >> n;
-    vector<int> numbers;
+    vector<int> numbers(n);
     for (int i = 0; i < n; ++i) {
         cin >> numbers[i];
     }

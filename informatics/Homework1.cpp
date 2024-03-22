@@ -1,82 +1,58 @@
-#include <iostream>
-#include <cmath>
+#include <map>
+#include <string>
 #include <vector>
+#include "iostream"
+#include "iomanip"
 
-using namespace std;
+struct Node {
+    std::map<std::string, Node> children;
+};
+
+class Tree {
+private:
+    Node root;
 
 
-//int main() {
-// int n, m;
-// cin >> n >> m;
-//
-// vector <int> A(n), B(m);
-// for (int i = 0; i < n; i++) cin >> A[i];
-// for (int i = 0; i < m; i++) cin >> B[i];
-//
-// int min_val = 1e9, vala = -1, valb = -1;
-// int inda = 0, indb = 0;
-//
-// while (inda < n && indb < m) {
-//  if (min_val > abs(A[inda] - B[indb])) {
-//   vala = A[inda];
-//   valb = B[indb];
-//   min_val = abs(A[inda] - B[indb]);
-//  }
-//
-//  if (A[inda] > B[indb]) {
-//   indb++;
-//  }
-//  else {
-//   inda++;
-//  }
-// }
-//
-// cout << min_val << "\n" << vala << " " << valb;
-//}
+public:
+    bool Has(const std::vector<std::string>& node) const;
+    void Insert(const std::vector<std::string>& node);
+    void Delete(const std::vector<std::string>& node);
 
-pair<double, double> NewPoint(double X, double Y) {
-    pair<double, double> A;
-    A.first = X;
-    A.second = Y;
-    return A;
-}
 
-pair<double, double> NewPoint(double radius, double angle, string mode) {
-    pair<double, double> A;
-    angle = angle * M_PI / 180;
-    A.first = radius * cos(angle);
-    A.second = radius * sin(angle);
-    return A;
-}
+};
 
-int main() {
-    int N, M_i;
-    double lenght = 0;
-    pair<double, double> A;
-    cin >> N;
-    for (int i = 0; i < N; i++) {
-        cin >> M_i;
-        vector <double> X(M_i);
-        vector <double> Y(M_i);
-        string input;
-        for (int j = 0; j < M_i; j++) {
-            cin >> input;
-            if (input == "P") {
-                cin >> X[j] >> Y[j];
-                A = NewPoint(X[j], Y[j], "P");
-            }
-            else {
-                X[j] = stoi(input);
-                cin >> Y[j];
-                A = NewPoint(X[j], Y[j]);
-            }
-            X[j] = A.first;
-            Y[j] = A.second;
+void Tree::Delete(const std::vector<std::string>& node) {
+    Node* current = &root;
+    for (size_t i = 0; i < node.size(); ++i) {
+        const std::string& item = node[i];
+        if (!(current->children.find(item)==current->children.end())) {
+            return;
         }
-        for (int j = 1; j < M_i; j++) {
-            lenght += sqrt(pow((X[j] - X[j - 1]), 2) + pow((Y[j] - Y[j - 1]), 2));
+        if (i + 1 == node.size()) {
+            current->children.erase(item);
+        } else {
+            current = &current->children.at(item);
         }
-        cout << lenght << endl;
-        lenght = 0;
     }
+}
+void Tree::Insert(const std::vector<std::string> &node) {
+    Node* current = &root;
+    for (const std::string& item : node) {
+        if (!(current->children.find(item)==current->children.end())) {
+            current->children[item];
+        }
+        current = &current->children[item];
+
+    }
+
+}
+bool Tree::Has (const std::vector<std::string> &node) const {
+    const Node* current = &root;
+    for(const std::string& item : node){
+        if (!(current->children.find(item)==current->children.end())) {
+            return false;
+        }
+        current =  &root.children.at(item);
+    }
+    return true;
 }
